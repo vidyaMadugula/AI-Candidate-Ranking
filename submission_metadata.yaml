@@ -1,0 +1,47 @@
+team_name: "Vidya-Madugula"
+
+primary_contact:
+name: "Vidya Madugula"
+email: "vidyamadugula1@gmail.com"
+phone: "+91-9392221588"
+
+team_members:
+
+* name: "Vidya Madugula"
+  email: "vidyamadugula1@gmail.com"
+  role: "AI/ML Engineer"
+
+github_repo: "https://github.com/vidyaMadugula/AI-Candidate-Ranking.git"
+
+sandbox_link: "https://huggingface.co/spaces/VidyaMadugula/AI-Candidate-Ranking"
+
+reproduce_command: "python rank.py --candidates data/raw/candidates.jsonl --out submission.csv"
+
+compute:
+platform: "Windows Laptop"
+cpu_cores: 4
+ram_gb: 8
+python_version: "3.11"
+os: "Windows 11"
+uses_gpu_for_inference: false
+has_network_during_ranking: false
+pre_computation_required: true
+pre_computation_time_minutes: 300
+
+ai_tools_used:
+
+* "ChatGPT"
+
+ai_usage_summary: |
+Used ChatGPT for architectural discussion, debugging assistance, code review, and implementation guidance. No candidate data was sent to external APIs during ranking. Final implementation, integration, testing, and validation were performed by the participant.
+
+methodology_summary: |
+Hybrid AI-based candidate ranking system combining semantic retrieval (Sentence Transformers + FAISS) and lexical retrieval (BM25). Candidate relevance is computed using semantic similarity, skill alignment, experience matching, behavioral signals, profile quality, and mandatory skill constraints. A honeypot detection module penalizes suspicious or inconsistent profiles, while diversity reranking improves shortlist quality by reducing redundancy. An explainability module generates evidence-based reasoning for every ranked recommendation.
+
+
+declarations:
+read_submission_spec: true
+code_is_original_work: true
+no_collusion: true
+honeypot_check_done: true
+reproduction_tested: true

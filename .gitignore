@@ -1,0 +1,15 @@
+# Virtual environments
+test_env/
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated artifacts
+data/processed/
+data/demo_processed/
+
+# Challenge dataset
+data/raw/candidates.jsonl
