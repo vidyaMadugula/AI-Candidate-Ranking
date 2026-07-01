@@ -7,12 +7,11 @@ project_root = Path(__file__).resolve().parents[2]
 
 class CandidateRetriever:
 
-    def __init__(self):
+    def __init__(self,data_dir="data/processed"):
 
         index_path = (
             project_root /
-            "data" /
-            "processed" /
+            data_dir /
             "candidate_index.faiss"
         )
 

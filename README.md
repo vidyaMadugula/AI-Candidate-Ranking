@@ -1,10 +1,10 @@
-# 🎯 SignalRank AI: Explainable Candidate Ranking System
+# 🎯 AI-Candidate-Ranker: Explainable Candidate Ranking System
 
 ## Overview
 
-SignalRank AI is an explainable AI-powered candidate ranking system designed to emulate the decision-making process of experienced recruiters.
+AI-Candidate-Ranker is an explainable AI-powered candidate ranking system designed to emulate the decision-making process of experienced recruiters.
 
-Instead of relying solely on keyword matching, the system combines semantic retrieval, lexical retrieval, behavioral intelligence, career analysis, profile quality signals, and anomaly detection to identify the strongest candidates for a given role.
+The system combines semantic retrieval, lexical retrieval, behavioral intelligence, career intelligence, profile quality assessment, and anomaly detection to rank candidates beyond simple keyword matching.
 
 Developed for the **Redrob Hiring Intelligence Challenge**, the system is designed to rank candidates at scale while remaining fully explainable and reproducible.
 
@@ -39,7 +39,7 @@ Feature Engineering
 Candidate Text Builder
         │
         ▼
-Sentence Embeddings
+SentenceTransformer
 (all-MiniLM-L6-v2)
         │
         ├──────────────┐
@@ -86,8 +86,8 @@ Recruiter-AI/
 │
 ├── data/
 │   ├── raw/
-│   ├── processed/
-│   └── sample_candidates.jsonl
+│   ├── processed/  # Generated automatically
+│   └── demo_candidates.jsonl
 │
 ├── src/
 │   ├── preprocessing/
@@ -103,11 +103,11 @@ Recruiter-AI/
 
 ## ⚙️ Installation
 
-Clone the repository:
+Clone the repository
 
 ```bash
 git clone https://github.com/vidyaMadugula/AI-Candidate-Ranking.git
-cd recruiter-ai
+cd AI-Candidate-Ranking
 ```
 
 Create a virtual environment:
@@ -137,52 +137,41 @@ pip install -r requirements.txt
 ```
 
 ---
-
-## 🔧 Preprocessing Pipeline
-
-Generate candidate features and embeddings:
-
-```bash
-python preprocess.py
-```
-
-Build the FAISS index:
-
-```bash
-python build_index.py
-```
-
-Preprocessing is performed once and stored locally for fast inference.
-
----
-
 ## 🏆 Running the Ranking Pipeline
 
-Generate ranked candidates:
-
-```bash
-python rank.py --candidates ./candidates.jsonl --out ./submission.csv
-```
-
-The command produces:
+Place the released challenge dataset at:
 
 ```text
-submission.csv
+data/raw/candidates.jsonl
 ```
 
-containing:
+Run the complete ranking pipeline:
+
+```bash
+python rank.py --candidates data/raw/candidates.jsonl --out submission.csv
+```
+
+If the processed artifacts are missing, the pipeline automatically:
+
+1. Preprocesses the candidate dataset
+2. Generates candidate embeddings
+3. Builds the FAISS index
+4. Loads the retrieval indexes
+5. Ranks candidates using hybrid retrieval and explainable scoring
+6. Produces the final submission CSV
+
+The generated file contains:
 
 ```text
 candidate_id,rank,score,reasoning
 ```
 
+No manual preprocessing or index-building steps are required.
 ---
 
 ## 🖥️ Live Demo
 
-A lightweight Streamlit application demonstrates the ranking pipeline on a curated sample dataset derived from the full candidate pool.
-
-The application ranks candidates end-to-end and displays the Top candidates with detailed explainability.
+A lightweight Streamlit application demonstrates the ranking pipeline on a representative sample of candidates from the released dataset.
 
 Run locally:
 
@@ -202,13 +191,13 @@ The demo:
 
 ## 🧠 Methodology
 
-The ranking score combines multiple independent signals.
+The final ranking score combines multiple complementary signals.
 
 ### 1. Hybrid Retrieval
 
-Candidate retrieval combines:
+Candidate retrieval uses:
 
-* Dense semantic retrieval using Sentence Transformers + FAISS
+* Dense semantic retrieval using SentenceTransformer embeddings + FAISS
 * Sparse lexical retrieval using BM25
 
 ```text
@@ -220,8 +209,6 @@ Hybrid Score =
 ---
 
 ### 2. Career Intelligence
-
-Career fit scoring considers:
 
 Career fit scoring considers:
 
@@ -304,33 +291,20 @@ This improves candidate variety while preserving relevance.
 
 ✓ Demonstrates production experience in retrieval and ranking systems
 
-✓ Matches critical skills including FAISS, RAG and semantic search
+✓ Matches critical skills including FAISS, LangChain and semantic search
 
-✓ Exceeds the minimum experience requirement with 6.5 years of experience
+✓ Meets the experience requirement and receives a high career-fit score
 ```
 
 ## 📈 Compute Constraints
 
 * CPU-only inference
 * No network access during ranking
-* Precomputed embeddings
+* Automatic preprocessing and embedding generation
 * Designed for 16 GB RAM environments
 * Ranking pipeline optimized for challenge constraints
 
 ---
-
-## 🔁 Reproducibility
-
-Official reproduction command:
-
-```bash
-python rank.py --candidates ./candidates.jsonl --out ./submission.csv
-```
-
-The pipeline executes end-to-end and generates the final ranked CSV.
-
----
-
 
 ## 📜 License
 

@@ -36,6 +36,38 @@ from src.explainability.explainer import (
 
 project_root = Path(__file__).resolve().parent
 
+JD_PRIORITY_SKILLS = [
+
+    "rag",
+    "langchain",
+    "faiss",
+    "semantic search",
+    "information retrieval",
+    "retrieval",
+    "learning to rank",
+    "recommendation systems",
+    "recommendation engine",
+    "bm25",
+    "vector search",
+    "vector database",
+    "pinecone",
+    "qdrant",
+    "milvus",
+    "weaviate",
+    "embeddings",
+    "embedding",
+    "sentence transformers",
+    "llm",
+    "llms",
+    "transformers",
+    "pgvector",
+    "opensearch",
+    "elasticsearch",
+    "haystack",
+    "llamaindex",
+    "python"
+]
+
 
 def generate_csv_reasoning(candidate):
 
@@ -57,38 +89,132 @@ def generate_csv_reasoning(candidate):
         1
     )
 
-    skills = features.get(
-        "skill_names",
-        []
-    )[:3]
+    candidate_skills = [
 
-    skill_text = ", ".join(
-        skills
-    ) if skills else "relevant skills"
+        skill.lower().strip()
+
+        for skill in features.get(
+            "skill_names",
+            []
+        )
+
+    ]
+
+    # --------------------------------------------------
+    # Select skills most relevant to the job description
+    # --------------------------------------------------
+
+    matched_skills = []
+
+    for skill in JD_PRIORITY_SKILLS:
+
+        if skill in candidate_skills:
+            matched_skills.append(skill)
+
+    # Stop after collecting 4 relevant skills
+        if len(matched_skills) == 4:
+            break
+
+    # Fill remaining slots with other profile skills
+
+    if len(matched_skills) < 4:
+
+        for skill in candidate_skills:
+
+            if skill not in matched_skills:
+
+                matched_skills.append(skill)
+
+            if len(matched_skills) == 4:
+                break
+    # Format skills nicely
+    if not matched_skills:
+        skill_text = "relevant technical skills"
+    elif len(matched_skills) == 1:
+        skill_text = matched_skills[0]
+    elif len(matched_skills) == 2:
+        skill_text = (
+            f"{matched_skills[0]} and "
+            f"{matched_skills[1]}"
+        )
+    else:
+        skill_text = (
+             ", ".join(matched_skills[:-1])
+             + f" and {matched_skills[-1]}"
+        )
 
     response_rate = features.get(
         "response_rate",
         None
     )
 
-    reasoning = (
+    # --------------------------------------------------
+    # Opening
+    # --------------------------------------------------
 
-        f"{title} with {years} years of experience; "
-        f"strong background in {skill_text}"
+    if years >= 8:
 
-    )
-
-    if response_rate is not None:
-
-        reasoning += (
-            f"; recruiter response rate "
-            f"{response_rate:.2f}"
+        opening = (
+            f"{title} with {years} years of experience"
         )
 
-    reasoning += "."
+    elif years >= 5:
 
-    return reasoning
+        opening = (
+            f"{title} with {years} years of industry experience"
+        )
 
+    else:
+
+        opening = (
+            f"{title} with {years} years of relevant experience"
+        )
+
+    # --------------------------------------------------
+    # Middle
+    # --------------------------------------------------
+
+    middle = f"Demonstrates expertise in {skill_text}"
+    if response_rate is not None:
+        if response_rate >= 0.75:
+            middle += (
+                f" while maintaining excellent recruiter responsiveness "
+                f"({response_rate:.2f})"
+            )
+        elif response_rate >= 0.50:
+            middle += (
+                f" with positive recruiter responsiveness "
+                f"({response_rate:.2f})"
+            )
+        elif response_rate >= 0.30:
+            middle += (
+                f" and consistent recruiter responsiveness "
+                f"({response_rate:.2f})"
+            )
+
+    # --------------------------------------------------
+    # Ending
+    # --------------------------------------------------
+
+    if years >= 8:
+
+        ending = (
+            "making the profile suitable for senior AI roles."
+        )
+
+    elif years >= 5:
+
+        ending = (
+            "making the profile a strong match for the role."
+        )
+
+    else:
+
+        ending = (
+            "providing a solid foundation for the required responsibilities."
+        )
+
+    return f"{opening}. {middle}, {ending}"
 
 class CandidateRanker:
 
@@ -99,9 +225,9 @@ class CandidateRanker:
 
         self.embedder = EmbeddingGenerator()
 
-        self.retriever = CandidateRetriever()
+        self.retriever = CandidateRetriever(data_dir)
 
-        self.bm25 = BM25Retriever()
+        self.bm25 = BM25Retriever(data_dir)
 
         self.diversity = DiversityReranker()
 
@@ -214,6 +340,9 @@ class CandidateRanker:
 
         for idx in all_indices:
 
+            idx = int(idx)
+            if idx < 0 or idx >= len(self.features):
+                continue
             feature = self.features[idx]
 
             # --------------------------------------

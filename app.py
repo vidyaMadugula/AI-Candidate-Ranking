@@ -75,7 +75,7 @@ st.set_page_config(
 # ======================================================
 
 st.title(
-    "🎯 Intelligent Candidate Ranker"
+    "AI Candidate Ranker"
 )
 
 st.markdown(
@@ -203,7 +203,7 @@ if run_button:
 
         st.metric(
             "Candidates Displayed",
-            min(len(results), 50)
+            min(len(results), 40)
         )
 
     with col2:
@@ -236,7 +236,7 @@ if run_button:
     # ==================================================
 
     for rank, candidate in enumerate(
-            results[:50],
+            results[:40],
             start=1
     ):
 

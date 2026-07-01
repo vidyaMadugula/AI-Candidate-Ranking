@@ -26,22 +26,44 @@ os: "Windows 11"
 uses_gpu_for_inference: false
 has_network_during_ranking: false
 pre_computation_required: true
-pre_computation_time_minutes: 300
+pre_computation_time_minutes: 120
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
 
 ai_tools_used:
-
-* "ChatGPT"
+  - "ChatGPT"
 
 ai_usage_summary: |
-Used ChatGPT for architectural discussion, debugging assistance, code review, and implementation guidance. No candidate data was sent to external APIs during ranking. Final implementation, integration, testing, and validation were performed by the participant.
+  Used ChatGPT for architectural discussion, debugging assistance, code review,
+  and implementation guidance. No candidate data was sent to external AI
+  services during ranking. The final system design, implementation,
+  integration, testing, validation, and submission were completed by the participant.
+
+# ============================================================================
+# Approach summary 
+# ============================================================================
 
 methodology_summary: |
-Hybrid AI-based candidate ranking system combining semantic retrieval (Sentence Transformers + FAISS) and lexical retrieval (BM25). Candidate relevance is computed using semantic similarity, skill alignment, experience matching, behavioral signals, profile quality, and mandatory skill constraints. A honeypot detection module penalizes suspicious or inconsistent profiles, while diversity reranking improves shortlist quality by reducing redundancy. An explainability module generates evidence-based reasoning for every ranked recommendation.
+  Hybrid AI-based candidate ranking system combining semantic retrieval
+  (SentenceTransformer + FAISS) and lexical retrieval (BM25). Candidate
+  relevance is computed using semantic similarity, skill verification,
+  experience alignment, behavioral signals, career intelligence, profile
+  quality assessment, and mandatory skill constraints. A honeypot detection
+  module penalizes suspicious or inconsistent profiles, while diversity
+  reranking reduces redundant recommendations. The pipeline automatically
+  preprocesses candidates, generates embeddings, builds the FAISS index (if
+  required), and produces an explainable ranked CSV containing evidence-based
+  reasoning for each recommendation.
 
+# ============================================================================
+# Declarations
+# ============================================================================
 
 declarations:
-read_submission_spec: true
-code_is_original_work: true
-no_collusion: true
-honeypot_check_done: true
-reproduction_tested: true
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

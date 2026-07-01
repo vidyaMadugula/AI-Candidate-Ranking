@@ -93,12 +93,11 @@ GOOD_TITLE_KEYWORDS = {
     "nlp engineer",
     "search engineer",
     "relevance engineer",
-    "backend engineer",
-    "data scientist",
-    "applied scientist",
-    "data engineer",
-    "machine learning scientist"
-
+    "machine learning scientist",
+    "llm engineer",
+    "genai engineer",
+    "retrieval engineer",
+    "staff ml engineer"
 }
 NEGATIVE_CAREER_TERMS = {
 
@@ -122,23 +121,45 @@ NEGATIVE_CAREER_TERMS = {
     "crm",
     "erp",
     "support engineer",
-    "helpdesk"
+    "helpdesk",
+    "business analyst"
 }
 
 
 BAD_TITLES = {
 
     "marketing manager",
+    "marketing executive",
     "operations manager",
+    "operations executive",
+
     "customer support",
+    "support engineer",
+    "helpdesk",
+
     "graphic designer",
+    "ui designer",
+    "ux designer",
+
     "seo specialist",
-    "sales manager",
-    "brand manager",
     "content writer",
+    "copywriter",
+
+    "sales manager",
+    "sales executive",
+    "business development",
+
+    "brand manager",
     "hr manager",
+    "recruiter",
+
     "accountant",
-    "civil engineer"
+    "finance analyst",
+
+    "civil engineer",
+    "mechanical engineer",
+    "electrical engineer",
+    "electronics engineer"
 
 }
 

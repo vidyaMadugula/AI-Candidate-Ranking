@@ -9,12 +9,11 @@ project_root = Path(__file__).resolve().parents[2]
 
 class BM25Retriever:
 
-    def __init__(self):
+    def __init__(self,data_dir="data/processed"):
 
         features_path = (
             project_root /
-            "data" /
-            "processed" /
+            data_dir /
             "candidate_features.pkl"
         )
 
